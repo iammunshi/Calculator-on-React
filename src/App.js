@@ -1,40 +1,54 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import Calculator from './screens/calculator';
-import CustomButton from './components/customButton/customButton';
-import Display from './components/display/display';
+import Register from './components/register'
+import Login from './components/login'
+import Profile from './components/profile';
+import { Container, Row, Button, Col } from 'reactstrap';
 
 class App extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      isRegister: false,
+      isLogin: true
+    }
+    this.register = this.register.bind(this);
+    this.login = this.login.bind(this);
+    this.getUser = this.getUser.bind(this);
+  }
+
+  register(){
+    this.setState({
+      isRegister:true,
+      isLogin:false
+    })
+  }
+  login(){
+    this.setState({
+      isRegister: false,
+      isLogin: true
+    })
+  }
+
+  getUser(user){
+    this.setState({
+      user: user
+    })
+  }
   render() {
+    const {isRegister, isLogin, user} = this.state;
     return (
       <div className="App">
-        <Calculator text="Calculator in React"></Calculator>
-          <Display displayStyle="displayStyle"></Display>
-          <CustomButton text="C" style="numbers"></CustomButton>
-          <CustomButton text="+/-" style="numbers"></CustomButton>
-          <CustomButton text="%" style="numbers"></CustomButton>
-          <CustomButton text="/" style="operators"></CustomButton>
-          <br/>
-          <CustomButton text="7" style="numbers"></CustomButton>
-          <CustomButton text="8" style="numbers"></CustomButton>
-          <CustomButton text="9" style="numbers"></CustomButton>
-          <CustomButton text="*" style="operators"></CustomButton>
-          <br/>
-          <CustomButton text="4" style="numbers"></CustomButton>
-          <CustomButton text="5" style="numbers"></CustomButton>
-          <CustomButton text="6" style="numbers"></CustomButton>
-          <CustomButton text="-" style="operators"></CustomButton>
-          <br/>
-          <CustomButton text="1" style="numbers"></CustomButton>
-          <CustomButton text="2" style="numbers"></CustomButton>
-          <CustomButton text="3" style="numbers"></CustomButton>
-          <CustomButton text="+" style="operators"></CustomButton>
-          <br/>
-          <CustomButton text="0" style="numbers"></CustomButton>
-          <CustomButton text="." style="numbers"></CustomButton>
-          <CustomButton text="del" style="numbers"></CustomButton>
-          <CustomButton text="=" style="equalTo"></CustomButton>
+        <Container>
+          <Row>
+            <Col>
+            {!user && isLogin && <Login getUser={this.getUser} />}
+            {!user && isLogin && <Button onClick={this.register}>Don't have account? Register</Button>}
+            {!user && isRegister && <Register />}
+            {!user && isRegister && <Button onClick={this.login}>Click here to Login</Button>}
+            {user && <Profile {...user}/>}
+            </Col>
+          </Row>
+        </Container>
       </div>
     );
   }
