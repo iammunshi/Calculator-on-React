@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Button, Form, FormGroup, Label, Input, FormText, Container, Row, Col} from 'reactstrap';
-import {updateFB} from '../config/firebase';
+import {updateFB, signoutFB} from '../config/firebase';
 
 
 class Profile extends Component {
@@ -13,6 +13,8 @@ class Profile extends Component {
             email: props.email
         }
         this.update = this.update.bind(this);
+        this.logoutt = this.logoutt.bind(this);
+        this.changePasswordd = this.changePasswordd.bind(this);
     }
 
     update(){
@@ -20,16 +22,23 @@ class Profile extends Component {
         const {name, age, email} = this.state;
         updateFB(name, age, email);
     }
+    logoutt(){
+        signoutFB();
+        this.props.logout();
+    }
+    changePasswordd(){
+        this.props.changePassword();
+    }
   render() {
       const {email, name, age} = this.state
     return (
         <div>
         <Row>
             <Col>
-                <Button className="pullRight">Change Password</Button>
+                <Button onClick={this.changePasswordd} className="pullRight">Change Password</Button>
             </Col>
             <Col>
-                <Button className="pullRight">Logout</Button>
+                <Button onClick={this.logoutt} className="pullRight">Logout</Button>
             </Col>
         </Row>
         <Form>

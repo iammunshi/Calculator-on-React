@@ -32,8 +32,9 @@ class Login extends Component {
           <Label for="examplePassword">Password</Label>
           <Input type="password" name="password" id="examplePassword" placeholder="password placeholder" onChange={(e) => this.setState({password: e.target.value})}/>
         </FormGroup>
-        
-        <Button onClick={this.login}>Submit</Button>
+        <FormGroup>
+            <Button onClick={this.login}>Submit</Button>
+        </FormGroup>
       </Form>
     );
   }
