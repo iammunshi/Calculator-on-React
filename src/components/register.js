@@ -42,7 +42,7 @@ class Register extends Component {
           <Input type="password" name="password" id="examplePassword" placeholder="password placeholder" onChange={(e) => this.setState({password: e.target.value})}/>
         </FormGroup>
         <FormGroup>
-            <Button onClick={this.signup}>Submit</Button>
+            <Button color="primary" onClick={this.signup}>Submit</Button>
         </FormGroup>
       </Form>
     );

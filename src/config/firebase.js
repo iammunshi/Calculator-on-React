@@ -2,13 +2,21 @@ import * as firebase from 'firebase';
 import { register } from '../serviceWorker';
 import Login from '../components/login';
 
+// var config = {
+//     apiKey: "AIzaSyBI2QVlaKmmAmAOd24ACJOjCaThsDhBuBo",
+//     authDomain: "munshi-myfirstreact.firebaseapp.com",
+//     databaseURL: "https://munshi-myfirstreact.firebaseio.com",
+//     projectId: "munshi-myfirstreact",
+//     storageBucket: "munshi-myfirstreact.appspot.com",
+//     messagingSenderId: "1046837677340"
+// };
 var config = {
-    apiKey: "AIzaSyBI2QVlaKmmAmAOd24ACJOjCaThsDhBuBo",
-    authDomain: "munshi-myfirstreact.firebaseapp.com",
-    databaseURL: "https://munshi-myfirstreact.firebaseio.com",
-    projectId: "munshi-myfirstreact",
-    storageBucket: "munshi-myfirstreact.appspot.com",
-    messagingSenderId: "1046837677340"
+    apiKey: "AIzaSyCQ7s6wLxDOSbYLHZ4JYWfm6RlltRoFViY",
+    authDomain: "saylani-8099b.firebaseapp.com",
+    databaseURL: "https://saylani-8099b.firebaseio.com",
+    projectId: "saylani-8099b",
+    storageBucket: "saylani-8099b.appspot.com",
+    messagingSenderId: "1028251352751"
 };
 firebase.initializeApp(config);
 const db = firebase.firestore();
@@ -48,8 +56,8 @@ function loginFB(email, password) {
 
 }
 
-function addUser(res, name, age, email) {
-    db.collection("users").doc(res.user.uid).set({ name, age, email }).then(function (user) {
+function addUser(res, fullname, age, email) {
+    db.collection("users").doc(res.user.uid).set({ fullname, age, email }).then(function (user) {
         alert("User Added Successfully")
     });
 }
@@ -84,9 +92,9 @@ function updateFB(name, age, email) {
             })
         })
 }
-function update(name, age, doc) {
+function update(fullname, age, doc) {
     db.collection('users').doc(doc.id).update({
-        name,
+        fullname,
         age
     }).then(function (user) {
         alert("user updated successfully")
@@ -136,7 +144,101 @@ function confirmOldPasswordFB(oldPassword) {
             resolve(false)
         });
     })
+}
 
+function addImage(image) {
+    return new Promise((resolve, reject) => {
+        const lastDot = image.name.lastIndexOf('.');
+        const filename = image.name.substring(0, lastDot) + '_' + Date.now() + image.name.substring(lastDot);
+        var storageRef = firebase.storage().ref('expertizo/' + filename);
+
+        storageRef.put(image).then(function (snapshot) {
+            snapshot.ref.getDownloadURL().then((downloadURL) => {
+                resolve(downloadURL)
+            })
+        })
+    })
+}
+async function addAd(title, description, price, images, category) {
+    console.log(images)
+    var imagesToDB = [];
+    var length = images.length;
+    for (var i = 0; i < length; i++) {
+        var urladdImage = await addImage(images[i]);
+        imagesToDB.push(urladdImage);
+    }
+    let obj = {
+        title, description, price, images: imagesToDB, createdAt: Date.now(), category
+    }
+    obj.user = db.doc('users/' + firebase.auth().currentUser.uid);
+    db.collection("ads").add(obj).then(function (user) {
+        alert("Ad Added Successfully")
+    });
+}
+
+function getCategories(){
+    return new Promise((resolve, reject)=>{
+        db.collection("categories").get().then(function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
+                // doc.data() is never undefined for query doc snapshots
+                console.log(doc.id, " => ", doc.data());
+                resolve(doc.data().categories)
+            });
+        });
+    })
+}
+
+function getAds(){
+    return new Promise((resolve, reject)=>{
+        db.collection("ads").onSnapshot(function(querySnapshot) {
+            var data = []
+            querySnapshot.forEach(function(doc) {
+                // doc.data() is never undefined for query doc snapshots
+                console.log(doc.id, " => ", doc.data());
+                data.push(doc.data())
+            });
+            resolve(data);
+        });
+    })
+}
+
+function getAdsWithSearch(input){
+    return new Promise((resolve, reject) => {
+        console.log(input)
+        const start = input;
+        const end = start + "\uF8FF"
+    
+        db.collection('ads').orderBy('title')
+        .startAt(start)
+        .endAt(end)
+        .get().then(doc => {
+            console.log("DOC", doc)
+            var data = []
+            doc.forEach(res => {
+                // doc.data() is never undefined for query doc snapshots
+                console.log(res.id, " => ", res.data());
+                data.push(res.data())
+            });
+            resolve(data);
+        })
+    })
+}
+function getAdsByCategory(input){
+    return new Promise((resolve, reject) => {
+        console.log(input)
+        db.collection('ads')
+        .where('category', '==' , input)
+        .get().then(doc => {
+            console.log("DOC", doc)
+            var data = []
+            doc.forEach(res => {
+                // doc.data() is never undefined for query doc snapshots
+                console.log(res.id, " => ", res.data());
+                data.push(res.data())
+            });
+            resolve(data);
+        })
+    })
 }
 export {
     registerFB,
@@ -144,5 +246,10 @@ export {
     updateFB,
     signoutFB,
     changePasswordFB,
-    confirmOldPasswordFB
+    confirmOldPasswordFB,
+    addAd,
+    getCategories,
+    getAds,
+    getAdsWithSearch,
+    getAdsByCategory
 }

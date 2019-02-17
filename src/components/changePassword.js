@@ -32,14 +32,14 @@ class ChangePassword extends Component {
     //   const {email, name, age} = this.state
     return (
         <div>
-        <Row>
+        {/* <Row>
             <Col>
                 <Button onClick={this.profile} className="pullRight">Profile</Button>
             </Col>
             <Col>
                 <Button onClick={this.logoutt} className="pullRight">Logout</Button>
             </Col>
-        </Row>
+        </Row> */}
         <Form>
             <h3>Change Password</h3>
         <FormGroup>

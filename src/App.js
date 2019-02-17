@@ -1,24 +1,34 @@
 import React, { Component } from 'react';
+import Home from './components/home'
 import Register from './components/register'
 import Login from './components/login'
 import Profile from './components/profile';
 import ChangePassword from './components/changePassword'
+import AddItem from './components/addItem'
 import { Container, Row, Button, Col } from 'reactstrap';
+import Header from './components/header'
 
 class App extends Component {
   constructor(props){
     super(props)
     this.state = {
       isRegister: false,
-      isLogin: true,
-      changePassword: false
+      isLogin: false,
+      changePassword: false,
+      addItem: false,
+      profile: false
     }
     this.register = this.register.bind(this);
     this.login = this.login.bind(this);
+
     this.getUser = this.getUser.bind(this);
+    
     this.logout = this.logout.bind(this);
     this.changePassword = this.changePassword.bind(this);
     this.profile = this.profile.bind(this);
+    
+    this.home = this.home.bind(this);
+    this.addItem = this.addItem.bind(this);
   }
 
   register(){
@@ -33,6 +43,12 @@ class App extends Component {
       isLogin: true
     })
   }
+  home(){
+    this.setState({
+      isRegister: false,
+      isLogin: false
+    })
+  }
 
   getUser(user){
     this.setState({
@@ -45,26 +61,57 @@ class App extends Component {
   }
 
   changePassword(){
-    this.setState({ changePassword: true })
+    this.setState({ 
+      changePassword: true,
+      addItem: false,
+      profile: false
+     })
   }
   profile(){
     this.setState({
-      changePassword: false
+      profile: true,
+      changePassword: false,
+      addItem: false
+    })
+  }
+
+  addItem(){
+    this.setState({
+      addItem: true,
+      changePassword: false,
+      profile: false
     })
   }
   render() {
-    const {isRegister, isLogin, user, changePassword} = this.state;
+    const {isRegister, isLogin, user, changePassword, addItem, profile} = this.state;
     return (
       <div className="App">
-        <Container>
+        <Header flags={{isRegister,user, isLogin, changePassword, addItem, profile}} user={user} register={this.register} login={this.login} home={this.home} logout={this.logout} profile={this.profile} addAd={this.addItem} changePassword={this.changePassword}/>
+        <Container fluid="true">
           <Row>
             <Col>
+            
+            {/* {!user && !isLogin && !isRegister && <Button onClick={this.register}>Don't have account? Register</Button>}
+            {!user && !isLogin && !isRegister && <Button onClick={this.login}>Click here to Login</Button>} */}
+            {!user && !isLogin && !isRegister && <Home/>}
+            
+            
+            {/* {!user && isLogin && <Button onClick={this.home}>Home</Button>} */}
             {!user && isLogin && <Login getUser={this.getUser} />}
             {!user && isLogin && <Button onClick={this.register}>Don't have account? Register</Button>}
+            
+            
+            {/* {!user && isRegister && <Button onClick={this.home}>Home</Button>} */}
             {!user && isRegister && <Register />}
             {!user && isRegister && <Button onClick={this.login}>Click here to Login</Button>}
-            {user && !changePassword && <Profile {...user} logout={this.logout} changePassword={this.changePassword}/>}
-            {user && changePassword && <ChangePassword logout={this.logout} profile={this.profile}/>}
+            
+            
+            {user && !changePassword && !addItem && profile && <Profile {...user} logout={this.logout} changePassword={this.changePassword} addItem={this.addItem} />}
+            
+            
+            {user && changePassword && !addItem && !profile && <ChangePassword logout={this.logout} profile={this.profile}/>}
+
+            {user && !changePassword && addItem && !profile &&  <AddItem logout={this.logout} profile={this.profile}/>}
             </Col>
           </Row>
         </Container>

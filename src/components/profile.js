@@ -8,13 +8,14 @@ class Profile extends Component {
     constructor(props){
         super(props)
         this.state = {
-            name: props.name,
+            name: props.fullname,
             age: props.age,
             email: props.email
         }
         this.update = this.update.bind(this);
         this.logoutt = this.logoutt.bind(this);
         this.changePasswordd = this.changePasswordd.bind(this);
+        this.addItem = this.addItem.bind(this);
     }
 
     update(){
@@ -29,18 +30,24 @@ class Profile extends Component {
     changePasswordd(){
         this.props.changePassword();
     }
+    addItem(){
+        this.props.addItem();
+    }
   render() {
       const {email, name, age} = this.state
     return (
         <div>
-        <Row>
+        {/* <Row>
             <Col>
                 <Button onClick={this.changePasswordd} className="pullRight">Change Password</Button>
             </Col>
             <Col>
+                <Button onClick={this.addItem} className="pullRight">Add Item</Button>
+            </Col>
+            <Col>
                 <Button onClick={this.logoutt} className="pullRight">Logout</Button>
             </Col>
-        </Row>
+        </Row> */}
         <Form>
             <h3>Profile</h3>
         <FormGroup>
