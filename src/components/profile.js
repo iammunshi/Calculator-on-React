@@ -7,10 +7,12 @@ class Profile extends Component {
 
     constructor(props){
         super(props)
+        console.log(props)
+        const {user} = props.location.state;
         this.state = {
-            name: props.fullname,
-            age: props.age,
-            email: props.email
+            name: user.fullname,
+            age: user.age,
+            email: user.email
         }
         this.update = this.update.bind(this);
         this.logoutt = this.logoutt.bind(this);

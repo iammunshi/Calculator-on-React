@@ -14,6 +14,7 @@ class Register extends Component {
             password: ''
         }
         this.signup = this.signup.bind(this);
+        this.login = this.login.bind(this);
     }
 
     signup(){
@@ -21,8 +22,12 @@ class Register extends Component {
         const {name, age, email, password} = this.state;
         registerFB(name, age, email, password);
     }
+    login(){
+      this.props.history.push('login');
+    }
   render() {
     return (
+      <div>
         <Form>
             <h3>Register</h3>
         <FormGroup>
@@ -45,6 +50,8 @@ class Register extends Component {
             <Button color="primary" onClick={this.signup}>Submit</Button>
         </FormGroup>
       </Form>
+      <Button onClick={this.login} to="/login">Already have account? Login!</Button>
+      </div>
     );
   }
 }

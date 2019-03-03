@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
 import {loginFB} from '../config/firebase';
+import {authInfo} from '../config/router';
 
 
 class Login extends Component {
@@ -11,6 +12,7 @@ class Login extends Component {
             password: ''
         }
         this.login = this.login.bind(this);
+        this.register = this.register.bind(this);
     }
 
     async login(){
@@ -18,10 +20,22 @@ class Login extends Component {
         const {email, password} = this.state;
         const user = await loginFB(email, password);
         console.log("hbhbakb,jmn a.nx amkxna.kxnas.", user);
-        this.props.getUser(user);
+        authInfo.login(user);
+        this.props.history.push({
+            pathname: "/profile",
+            state:{
+                user
+            }
+        })
+        //this.props.getUser(user);
+    }
+    register(){
+        this.props.history.push('register')
+        //console.log(this.props)
     }
   render() {
     return (
+        <div>
         <Form>
             <h3>Login</h3>
         <FormGroup>
@@ -35,7 +49,10 @@ class Login extends Component {
         <FormGroup>
             <Button color="primary" onClick={this.login}>Submit</Button>
         </FormGroup>
+        
       </Form>
+      <Button onClick={this.register} to="/register">Don't have account? Register</Button>
+      </div>
     );
   }
 }

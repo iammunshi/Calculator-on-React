@@ -7,6 +7,7 @@ import ChangePassword from './components/changePassword'
 import AddItem from './components/addItem'
 import { Container, Row, Button, Col } from 'reactstrap';
 import Header from './components/header'
+import {BasicExample as Routes} from './config/router'
 
 class App extends Component {
   constructor(props){
@@ -86,22 +87,18 @@ class App extends Component {
     const {isRegister, isLogin, user, changePassword, addItem, profile} = this.state;
     return (
       <div className="App">
-        <Header flags={{isRegister,user, isLogin, changePassword, addItem, profile}} user={user} register={this.register} login={this.login} home={this.home} logout={this.logout} profile={this.profile} addAd={this.addItem} changePassword={this.changePassword}/>
+        {/* <Header flags={{isRegister,user, isLogin, changePassword, addItem, profile}} user={user} register={this.register} login={this.login} home={this.home} logout={this.logout} profile={this.profile} addAd={this.addItem} changePassword={this.changePassword}/>
         <Container fluid="true">
           <Row>
-            <Col>
-            
-            {/* {!user && !isLogin && !isRegister && <Button onClick={this.register}>Don't have account? Register</Button>}
-            {!user && !isLogin && !isRegister && <Button onClick={this.login}>Click here to Login</Button>} */}
-            {!user && !isLogin && !isRegister && <Home/>}
+            <Col> */}
+              <Routes/>
+            {/* {!user && !isLogin && !isRegister && <Home/>}
             
             
-            {/* {!user && isLogin && <Button onClick={this.home}>Home</Button>} */}
             {!user && isLogin && <Login getUser={this.getUser} />}
             {!user && isLogin && <Button onClick={this.register}>Don't have account? Register</Button>}
             
             
-            {/* {!user && isRegister && <Button onClick={this.home}>Home</Button>} */}
             {!user && isRegister && <Register />}
             {!user && isRegister && <Button onClick={this.login}>Click here to Login</Button>}
             
@@ -111,10 +108,10 @@ class App extends Component {
             
             {user && changePassword && !addItem && !profile && <ChangePassword logout={this.logout} profile={this.profile}/>}
 
-            {user && !changePassword && addItem && !profile &&  <AddItem logout={this.logout} profile={this.profile}/>}
-            </Col>
+            {user && !changePassword && addItem && !profile &&  <AddItem logout={this.logout} profile={this.profile}/>} */}
+            {/* </Col>
           </Row>
-        </Container>
+        </Container> */}
       </div>
     );
   }

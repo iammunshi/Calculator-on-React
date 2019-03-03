@@ -26,9 +26,19 @@ class Home extends Component {
         }
         this.search = this.search.bind(this)
         this.searchByCategory = this.searchByCategory.bind(this);
+        this.getAds = this.getAds.bind(this);
+        this.getAdById = this.getAdById.bind(this);
     }
 
     async componentDidMount() {
+        const data = await getAds();
+        const categories = await getCategories();
+        this.setState({
+            ads: data,
+            categories
+        })
+    }
+    async getAds(){
         const data = await getAds();
         const categories = await getCategories();
         this.setState({
@@ -46,6 +56,16 @@ class Home extends Component {
         const data = await getAdsByCategory(e.target.value)
         this.setState({
             ads: data
+        })
+    }
+    getAdById(id){
+        console.log("CLICKED ID????????????",id)
+        this.props.history.push({
+            pathname: "/singleAd/"+id,
+            state: {
+                id
+            }
+
         })
     }
     render() {
@@ -74,6 +94,7 @@ class Home extends Component {
                                         <h4>Categories</h4>
                                         <FormGroup>
                                             <div>
+                                                <CustomInput id="0009" name="customRadio" type="radio" value="All" onClick={this.getAds}>All</CustomInput>
                                                 {categories.map((element, key)=>{
                                                     return <CustomInput id={key} name="customRadio" type="radio" value={element} label={element} onClick={this.searchByCategory}/>
                                                 })}
@@ -90,14 +111,16 @@ class Home extends Component {
                             <Row>
                                 {
                                     ads.map(element => {
+                                        console.log(element)
                                         return <Col md="3" style={{ marginBottom: 10 }}>
+                                        
                                             <Card>
-                                                <CardImg top height="120" width="100%" src={element.images[0]} alt="Card image cap" />
+                                                <CardImg top height="120" width="100%" src={element.data.images[0]} alt="Card image cap" />
                                                 <CardBody>
-                                                    <CardTitle>{element.title}</CardTitle>
-                                                    <CardSubtitle>Price: {element.price}</CardSubtitle>
-                                                    <CardText>{element.description}</CardText>
-                                                    <Button>View</Button>
+                                                    <CardTitle>{element.data.title}</CardTitle>
+                                                    <CardText>{element.data.description || element.data.desc}</CardText>
+                                                    <CardSubtitle>Price: {element.data.price}</CardSubtitle>
+                                                    <Button onClick={() => this.getAdById(element.id)}>View</Button>
                                                 </CardBody>
                                             </Card>
                                         </Col>

@@ -190,15 +190,35 @@ function getCategories(){
 
 function getAds(){
     return new Promise((resolve, reject)=>{
-        db.collection("ads").onSnapshot(function(querySnapshot) {
-            var data = []
-            querySnapshot.forEach(function(doc) {
-                // doc.data() is never undefined for query doc snapshots
-                console.log(doc.id, " => ", doc.data());
-                data.push(doc.data())
-            });
-            resolve(data);
+        // db.collection("ads").onSnapshot(function(querySnapshot) {
+        //     var data = []
+        //     querySnapshot.forEach(function(doc) {
+        //         // doc.data() is never undefined for query doc snapshots
+        //         console.log(doc.id, " => ", doc.data());
+        //         data.push(doc.data())
+        //     });
+        //     resolve(data);
+        // });
+        var data = []
+        db.collection("ads")
+        .onSnapshot(function(snapshot) {
+        snapshot.docChanges().forEach(function(change) {
+            if (change.type === "added") {
+                console.log(change.doc.id, " => ", change.doc.data());
+                data.push({id: change.doc.id, data: change.doc.data()})
+            }
+            if (change.type === "modified") {
+                console.log(change.doc.id, " => ", change.doc.data());
+                data.push({id: change.doc.id, data: change.doc.data()})
+            }
+            if (change.type === "removed") {
+                console.log(change.doc.id, " => ", change.doc.data());
+                data.push({id: change.doc.id, data: change.doc.data()})
+            }
         });
+    });
+    resolve(data)
+
     })
 }
 
@@ -240,6 +260,24 @@ function getAdsByCategory(input){
         })
     })
 }
+
+function getAdById(id){
+    return new Promise((resolve, reject) => {
+        var docRef = db.collection("ads").doc(id);
+
+        docRef.get().then(function(doc) {
+            if (doc.exists) {
+                console.log("Document data:", doc.data());
+                resolve(doc.data())
+            } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+            }
+        }).catch(function(error) {
+            console.log("Error getting document:", error);
+        });
+    })
+}
 export {
     registerFB,
     loginFB,
@@ -251,5 +289,6 @@ export {
     getCategories,
     getAds,
     getAdsWithSearch,
-    getAdsByCategory
+    getAdsByCategory,
+    getAdById
 }

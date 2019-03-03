@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "munshi-myfirstreact"
+    "default": "munshi-myfirstreact",
+    "phase2": "olxm-b5467"
   }
 }

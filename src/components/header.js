@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import Routes from '../config/router';
 import {
     Collapse,
     Navbar,
@@ -17,6 +19,7 @@ import {
 class Home extends Component {
     constructor(props) {
         super(props)
+        console.log(props)
         this.toggle = this.toggle.bind(this);
         this.register = this.register.bind(this);
         this.login = this.login.bind(this);
@@ -40,7 +43,7 @@ class Home extends Component {
             // addItem: this.props.flags.addItem,
             user: this.props.user
         };
-        console.log("user", this.props.flags.user)
+        // console.log("user", this.props.flags.user)
     }
     toggle() {
         this.setState({
@@ -51,37 +54,38 @@ class Home extends Component {
         this.setState({
             isOpen: !this.state.isOpen
         });
-        this.props.register();
+        //this.props.register();
     }
     login() {
         this.setState({
             isOpen: !this.state.isOpen
         });
-        this.props.login();
+        //this.props.login();
+        //this.props.history.push('login');
     }
     home() {
         this.setState({
             isOpen: !this.state.isOpen
         });
-        this.props.home();
+        //this.props.home();
     }
     profile() {
         this.setState({
             isOpen: !this.state.isOpen
         });
-        this.props.profile();
+        //this.props.profile();
     }
     addAd() {
         this.setState({
             isOpen: !this.state.isOpen
         });
-        this.props.addAd();
+        //this.props.addAd();
     }
     changePassword() {
         this.setState({
             isOpen: !this.state.isOpen
         });
-        this.props.changePassword();
+        //this.props.changePassword();
     }
     logout() {
         this.setState({
@@ -101,7 +105,7 @@ class Home extends Component {
             user,
             // changePassword, addItem
         } = this.state;
-        console.log("userHeader", user)
+        // console.log("userHeader", user)
         //console.log('log', isLogin)
         return (
             <div>
@@ -109,7 +113,9 @@ class Home extends Component {
                     <NavbarBrand onClick={this.home}>Expertizo-Bech dey</NavbarBrand>
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
+                    {/* <Router> */}
                         <Nav className="ml-auto" navbar>
+                        
                             {user &&
                                 <NavItem>
                                     <NavLink href="#" onClick={this.profile}>Profile</NavLink>
@@ -133,13 +139,13 @@ class Home extends Component {
                             {
                                 !user &&
                                 <NavItem>
-                                    <NavLink href="#" onClick={this.home}>Home</NavLink>
+                                    <NavLink onClick={this.home}><Link to="/">Home</Link></NavLink>
                                 </NavItem>
                             }
                             {
                                 !user &&
                                 <NavItem>
-                                    <NavLink href="#" onClick={this.login}>Login</NavLink>
+                                    <NavLink onClick={this.login}><Link to="/login">Login</Link></NavLink>
                                 </NavItem>
                             }
 
@@ -161,7 +167,9 @@ class Home extends Component {
                   </DropdownItem>
                                 </DropdownMenu>
                             </UncontrolledDropdown> */}
+                            
                         </Nav>
+                        {/* </Router> */}
                     </Collapse>
                 </Navbar>
             </div>
