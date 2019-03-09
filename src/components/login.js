@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import {Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
 import {loginFB} from '../config/firebase';
 import {authInfo} from '../config/router';
+import {connect} from 'react-redux';
+import {updateUser} from '../redux/action'
 
 
 class Login extends Component {
@@ -21,6 +23,7 @@ class Login extends Component {
         const user = await loginFB(email, password);
         console.log("hbhbakb,jmn a.nx amkxna.kxnas.", user);
         authInfo.login(user);
+        this.props.updateUserFunc(user);
         this.props.history.push({
             pathname: "/profile",
             state:{
@@ -57,4 +60,15 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = (state) => {
+    return {
+        user: state.user
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+       updateUserFunc: (user) => dispatch(updateUser(user))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

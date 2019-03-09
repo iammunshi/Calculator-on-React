@@ -7,7 +7,9 @@ import ChangePassword from './components/changePassword'
 import AddItem from './components/addItem'
 import { Container, Row, Button, Col } from 'reactstrap';
 import Header from './components/header'
-import {BasicExample as Routes} from './config/router'
+import {BasicExample as Routes} from './config/router';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 
 class App extends Component {
   constructor(props){
@@ -86,6 +88,7 @@ class App extends Component {
   render() {
     const {isRegister, isLogin, user, changePassword, addItem, profile} = this.state;
     return (
+      <Provider store={store}>
       <div className="App">
         {/* <Header flags={{isRegister,user, isLogin, changePassword, addItem, profile}} user={user} register={this.register} login={this.login} home={this.home} logout={this.logout} profile={this.profile} addAd={this.addItem} changePassword={this.changePassword}/>
         <Container fluid="true">
@@ -113,6 +116,7 @@ class App extends Component {
           </Row>
         </Container> */}
       </div>
+      </Provider>
     );
   }
 }

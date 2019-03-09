@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import {Button, Form, FormGroup, Label, Input, FormText, Container, Row, Col} from 'reactstrap';
 import {updateFB, signoutFB} from '../config/firebase';
-
+import {connect} from 'react-redux';
 
 class Profile extends Component {
 
     constructor(props){
         super(props)
         console.log(props)
-        const {user} = props.location.state;
+        //const {user} = props.location.state;
+        const {user} = props;
+        console.log("PROPS KA USER>>>>",props.user)
         this.state = {
             name: user.fullname,
             age: user.age,
@@ -36,6 +38,7 @@ class Profile extends Component {
         this.props.addItem();
     }
   render() {
+      console.log("PROPS PROFILE>>>>>>",this.props)
       const {email, name, age} = this.state
     return (
         <div>
@@ -72,4 +75,10 @@ class Profile extends Component {
   }
 }
 
-export default Profile;
+const mapStateToProps = (state) => {
+    return {
+        user: state.user
+    }
+}
+
+export default connect(mapStateToProps)(Profile);
